@@ -8,8 +8,15 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7477374888832083"
-     crossorigin="anonymous"></script>
+  <!-- Google AdSense Auto Ads -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7477374888832083" crossorigin="anonymous"></script>
+  <script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-7477374888832083",
+          enable_page_level_ads: true
+     });
+  </script>
+  <meta name="description" content="A free spelling practice app for students and learners. Improve your spelling skills with audio pronunciation and self-paced learning.">
 </head>
 <body>
   <div id="root"></div>
@@ -22,6 +29,12 @@
       const [isComplete, setIsComplete] = React.useState(false);
       const [isPracticeMode, setIsPracticeMode] = React.useState(false);
       const synthesisRef = React.useRef(window.speechSynthesis);
+      const [showInstructions, setShowInstructions] = React.useState(true);
+
+      React.useEffect(() => {
+        // This helps AdSense detect content on your page
+        document.title = "Spelling Practice App - Improve Your Spelling Skills";
+      }, []);
 
       const addWord = () => {
         if (inputWord.trim() !== '' && !isPracticeMode) {
@@ -116,116 +129,158 @@
       };
 
       return (
-        <div className="flex flex-col items-center w-full max-w-md mx-auto p-6 bg-blue-50 rounded-lg shadow-lg">
-          <h1 className="text-2xl font-bold text-blue-700 mb-4">Spelling Practice</h1>
-          
-          {!isPracticeMode ? (
-            <>
-              <div className="w-full mb-6">
-                <div className="flex gap-2 mb-2">
-                  <input
-                    type="text"
-                    value={inputWord}
-                    onChange={(e) => setInputWord(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Type a spelling word..."
-                    className="flex-grow p-2 border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    onClick={addWord}
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white px-4 py-8">
+          <div className="max-w-md mx-auto">
+            <header className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-blue-700">Spelling Practice App</h1>
+              <p className="text-gray-600 mt-2">Improve your spelling with audio assistance</p>
+            </header>
+
+            {/* Content area - auto ads will be placed by Google */}
+
+            {showInstructions && (
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-lg font-semibold text-blue-700">How to Use</h2>
+                  <button 
+                    onClick={() => setShowInstructions(false)}
+                    className="text-gray-500 hover:text-gray-700"
                   >
-                    Add
+                    ✕
                   </button>
                 </div>
+                <ol className="text-sm text-gray-700 list-decimal pl-5 space-y-1">
+                  <li>Add your spelling words using the input field below</li>
+                  <li>Click "Start Practice" when you're ready</li>
+                  <li>Use "Read Next Word" to hear each word</li>
+                  <li>"Repeat My Word" lets you hear the current word again</li>
+                  <li>Write down each word after hearing it</li>
+                  <li>Continue until you complete all words</li>
+                </ol>
               </div>
-
-              {words.length > 0 && (
-                <div className="w-full mb-6">
-                  <h2 className="text-lg font-semibold text-blue-600 mb-2">Your Words:</h2>
-                  <div className="bg-white p-3 rounded-lg border border-blue-200 max-h-32 overflow-y-auto">
-                    <ul>
-                      {words.map((word, index) => (
-                        <li key={index} className="flex justify-between items-center py-1">
-                          <span>
-                            {word}
-                          </span>
-                          <button 
-                            onClick={() => removeWord(index)} 
-                            className="text-red-500 hover:text-red-700 text-sm"
-                          >
-                            ✕
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+            )}
+            
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              {!isPracticeMode ? (
+                <>
+                  <div className="w-full mb-6">
+                    <div className="flex gap-2 mb-2">
+                      <input
+                        type="text"
+                        value={inputWord}
+                        onChange={(e) => setInputWord(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Type a spelling word..."
+                        className="flex-grow p-2 border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        onClick={addWord}
+                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                      >
+                        Add
+                      </button>
+                    </div>
                   </div>
-                </div>
+
+                  {words.length > 0 && (
+                    <div className="w-full mb-6">
+                      <h2 className="text-lg font-semibold text-blue-600 mb-2">Your Words:</h2>
+                      <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 max-h-32 overflow-y-auto">
+                        <ul>
+                          {words.map((word, index) => (
+                            <li key={index} className="flex justify-between items-center py-1">
+                              <span>
+                                {word}
+                              </span>
+                              <button 
+                                onClick={() => removeWord(index)} 
+                                className="text-red-500 hover:text-red-700 text-sm"
+                              >
+                                ✕
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+
+                  {words.length > 0 && (
+                    <button
+                      onClick={startPractice}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium text-lg mb-4"
+                    >
+                      Start Practice
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="w-full p-4 bg-blue-100 border border-blue-300 rounded-lg mb-6 text-center">
+                    <p className="text-blue-800 font-medium">Practice Mode</p>
+                    <p className="text-blue-600 text-sm">
+                      {isComplete 
+                        ? "All words completed!" 
+                        : currentWordIndex === -1 
+                          ? "Press 'Read Next Word' to start" 
+                          : `Currently on word ${currentWordIndex + 1} of ${words.length}`
+                      }
+                    </p>
+                  </div>
+
+                  <div className="w-full flex flex-col gap-4">
+                    <div className="flex gap-4">
+                      <button
+                        onClick={readNextWord}
+                        className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium text-lg"
+                      >
+                        Read Next Word
+                      </button>
+                      <button
+                        onClick={repeatWord}
+                        className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-medium text-lg"
+                      >
+                        Repeat My Word
+                      </button>
+                    </div>
+                    
+                    <button
+                      onClick={endPractice}
+                      className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
+                    >
+                      End Practice
+                    </button>
+                  </div>
+
+                  {isComplete && (
+                    <div className="mt-6 p-4 bg-yellow-100 text-yellow-800 rounded-lg text-center">
+                      Well done! 🎉 All words completed!
+                    </div>
+                  )}
+                </>
               )}
 
-              {words.length > 0 && (
+              {!isPracticeMode && words.length > 0 && (
                 <button
-                  onClick={startPractice}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium text-lg mb-4"
+                  onClick={resetApp}
+                  className="mt-4 text-red-600 hover:text-red-800 text-sm"
                 >
-                  Start Practice
+                  Clear All Words
                 </button>
               )}
-            </>
-          ) : (
-            <>
-              <div className="w-full p-4 bg-blue-100 border border-blue-300 rounded-lg mb-6 text-center">
-                <p className="text-blue-800 font-medium">Practice Mode</p>
-                <p className="text-blue-600 text-sm">
-                  {isComplete 
-                    ? "All words completed!" 
-                    : currentWordIndex === -1 
-                      ? "Press 'Read Next Word' to start" 
-                      : `Currently on word ${currentWordIndex + 1} of ${words.length}`
-                  }
-                </p>
-              </div>
+            </div>
 
-              <div className="w-full flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <button
-                    onClick={readNextWord}
-                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium text-lg"
-                  >
-                    Read Next Word
-                  </button>
-                  <button
-                    onClick={repeatWord}
-                    className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-medium text-lg"
-                  >
-                    Repeat My Word
-                  </button>
-                </div>
-                
-                <button
-                  onClick={endPractice}
-                  className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
-                >
-                  End Practice
-                </button>
-              </div>
+            {/* Footer area - auto ads may appear near here */}
 
-              {isComplete && (
-                <div className="mt-6 p-4 bg-yellow-100 text-yellow-800 rounded-lg text-center">
-                  Well done! 🎉 All words completed!
-                </div>
-              )}
-            </>
-          )}
-
-          {!isPracticeMode && words.length > 0 && (
-            <button
-              onClick={resetApp}
-              className="mt-4 text-red-600 hover:text-red-800 text-sm"
-            >
-              Clear All Words
-            </button>
-          )}
+            <footer className="mt-8 text-center text-gray-600 text-sm">
+              <p>© 2025 Spelling Practice App</p>
+              <p className="mt-1">
+                <a href="privacy.html" className="text-blue-600 hover:underline">Privacy Policy</a>
+                {" • "}
+                <a href="terms.html" className="text-blue-600 hover:underline">Terms of Use</a>
+              </p>
+            </footer>
+          </div>
         </div>
       );
     }
