@@ -1,0 +1,29 @@
+{
+  "name": "Spelling Buddies",
+  "short_name": "Spelling",
+  "description": "A fun, colorful spelling practice app for kids!",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFD54F",
+  "theme_color": "#FFD54F",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
